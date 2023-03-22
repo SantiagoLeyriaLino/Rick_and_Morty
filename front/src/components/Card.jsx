@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { connect, Connect } from 'react-redux';
+import { connect} from 'react-redux';
 import { addFavorite,removeFavorite } from '../redux/actions';
+
 
 const DivCard= styled.div `
    width: fit-content;
@@ -14,7 +15,9 @@ const Button= styled.button `
    border-radius: 20%;
 `;
 
- function Card({id,name,species,gender,image,onClose,addFavorite,removeFavorite}) {
+ function Card({id,name,species,gender,image,onClose,addFavorite,removeFavorite,myFavorites}) {
+  
+  
    const[isFav,setIsFav]=useState(false);
    const handleFavorite=()=>{
       if (isFav){
@@ -26,14 +29,21 @@ const Button= styled.button `
       }
      
    }
+   useEffect(()=>{
+      myFavorites.forEach((fav)=>{
+         if(fav.id === id){
+            setIsFav(true)
+         }
+      })
+   },[myFavorites])
 
    return (
       <DivCard>
-          isFav ? (
+         {isFav ? (
       <button onClick={handleFavorite}>❤️</button>
    ) : (
       <button onClick={handleFavorite}>🤍</button>
-   );  
+   )} 
          <Link to={`/detail/${id}`}>
             <h2>{name}</h2>
          </Link>
@@ -43,11 +53,19 @@ const Button= styled.button `
          <Button onClick={()=> {onClose(id)}}>x</Button>
       </DivCard>
    );
-}
+   }
 const mapDispatchToProps=(dispatch)=>{
    return{
       addFavorite:(character)=>{dispatch(addFavorite(character))},
       removeFavorite:(id)=>{dispatch(removeFavorite(id))}
    }
 };
-export default connect(null,mapDispatchToProps)(Card);
+const mapStateToProps=(state)=>{
+   return{
+      myFavorites:state.myFavorites,
+   }
+}
+ 
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Card);
