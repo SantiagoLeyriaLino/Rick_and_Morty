@@ -6,7 +6,7 @@ import Cards from './components/Cards.jsx'
 import About from "./components/About/about";
 import Detail from "./components/Detail/detail";
 import Form from "./components/Form/Form";
-
+import Favorites from "./components/Favorites/Favorites"
 
 function App() {
   const [characters, setCharacters] = useState([]);
@@ -29,12 +29,13 @@ function App() {
   },[access])
 
   const onSearch= (id)=> {
-    const URL_BASE = "https://be-a-rym.up.railway.app/api"; 
-    const KEY = "44c4ae584784.b53fa8338454b0c4c255";
+  const URL_BASE = "http://localhost:3001/rickandmorty"; 
+ //   const KEY = "44c4ae584784.b53fa8338454b0c4c255";
    
     if(characters.find((char) => char.id===id)) {
       return(alert("Esta id ya está en tus cartas"))}
-    fetch(`${URL_BASE}/character/${id}?key=${KEY}`)
+   // fetch(`${URL_BASE}/character/${id}?key=${KEY}`)
+   fetch(`${URL_BASE}/onsearch/${id}`)
        .then((response) => response.json())
        .then((data) => {
           if (data.name) {
@@ -58,6 +59,7 @@ function App() {
         element={<Cards characters={characters} onClose={onClose} />}
         />
         <Route path="/about" element={<About />} />
+        <Route path="/favorites" element={<Favorites />} />
         <Route path="/detail/:detailId" element={<Detail />}>Detail</Route>
       </Routes>
 

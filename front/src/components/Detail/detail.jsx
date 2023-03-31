@@ -8,11 +8,12 @@ const Detail = () =>{
     const [characters, setCharacters] = useState([]);
     
     useEffect(()=>{
-        const URL_BASE = "https://be-a-rym.up.railway.app/api"; 
-        const KEY = "44c4ae584784.b53fa8338454b0c4c255";
-        axios(`${URL_BASE}/character/${detailId}?key=${KEY}`)
+        const URL_BASE = "http://localhost:3001/rickandmorty"; 
+       // const KEY = "44c4ae584784.b53fa8338454b0c4c255";
+        axios(`${URL_BASE}/detail/${detailId}`)
         .then((response) => setCharacters(response.data));
     }, []);
+    // /${detailId}?key=${KEY}
 
     return( 
         <div>
